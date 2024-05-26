@@ -2,6 +2,9 @@ package com.example.CRUD_Application.controller;
 
 import com.example.CRUD_Application.model.Book;
 import com.example.CRUD_Application.reposotiry.BookRepository;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,11 +16,30 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
+//@SecurityRequirement(name = "auth")
 public class BookController {
 
     @Autowired
     private BookRepository bookRepository;
 
+    @Operation(
+            tags = "GET Books",
+            description = "Get All Books",
+            responses = {
+                    @ApiResponse(
+                    description = "Success",
+                    responseCode = "200"
+            ),
+                    @ApiResponse(
+                            description = "Data Not Found",
+                            responseCode = "404"
+                    ),
+                    @ApiResponse(
+                            description = "Internal Server Error",
+                            responseCode = "500"
+                    )
+            }
+    )
     @GetMapping("/getAllBooks")
     public ResponseEntity<List<Book>> getAllBooks(){
         try{
